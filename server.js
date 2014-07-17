@@ -41,8 +41,28 @@ router.use(function(req,res,next){
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-	res.json({ message: 'ok' });
+	//res.json({ message: 'ok' });
+	res.send('ok')
 });
+
+router.route('/gist_raw/:db_id').get(function(req,res){
+
+  console.log('get called')
+  console.log('gist id ' + req.params.db_id)
+
+  request({
+  		url: 'https://api.github.com/gists/' + req.params.db_id,
+  		method: 'GET',
+  		json: true,
+	    headers: {
+	        'User-Agent': 'request'
+	    }  		
+  }, function(err, inc, body){
+  	console.log(body)
+  	res.json(body);
+  })
+
+})
 
 router.route('/gist/:db_id').get(function(req,res){
 
@@ -60,11 +80,8 @@ router.route('/gist/:db_id').get(function(req,res){
   	console.log(body)
   	res.json(body);
   })
-
   
-
 })
-
 
 
 // more routes for our API will happen here
