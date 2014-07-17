@@ -1,0 +1,59 @@
+<html>
+
+  <head>
+
+    <script src='jquery-1.11.1.js'></script>
+    <script src='d3.js' charset='utf-8'></script>
+
+  </head>
+
+  <body>
+    <div class='derp'></div>
+  </body>
+
+  <script>
+    
+    $.ajax({
+
+      type: 'GET',
+      url: '/api/gist_raw/2508468d856680cf5351',
+      data: {},
+      success: function(data){
+
+        console.log(data)
+
+        // get the js file and execute it
+
+        $.ajax({
+
+          type: 'POST',
+          url: '/api/gist_rawurl/',
+          data: { 
+            url: data.files['test.js'].raw_url
+          },
+          success: function(data){
+
+            var s = document.createElement('script');
+              s.type = 'text/javascript';
+              var code = data;
+              try {
+                s.appendChild(document.createTextNode(code));
+                document.body.appendChild(s);
+              } catch (e) {
+                s.text = code;
+                document.body.appendChild(s);
+              }
+
+
+          }
+
+
+        })
+
+      }
+
+    })
+
+  </script>
+
+</html>
