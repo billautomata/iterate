@@ -4,6 +4,11 @@ var bodyParser = require('body-parser');
 var moment = require('moment')
 var express_json = require('express-json')
 var json = require('json')
+var request = require('request')
+
+var GitHubApi = require("github");
+
+var github = new GitHubApi({ version: "3.0.0" });
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -39,13 +44,38 @@ router.get('/', function(req, res) {
 	res.json({ message: 'ok' });
 });
 
+router.route('/gist/:db_id').get(function(req,res){
+
+  console.log('get called')
+  console.log('gist id ' + req.params.db_id)
+
+  request({
+  		url: 'https://api.github.com/gists/' + req.params.db_id,
+  		method: 'GET',
+  		json: true,
+	    headers: {
+	        'User-Agent': 'request'
+	    }  		
+  }, function(err, inc, body){
+  	console.log(body)
+  	res.json(body);
+  })
+
+  
+
+})
+
+
+
 // more routes for our API will happen here
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
+app.use('/', express.static(__dirname+'/html'))
 
 // START THE SERVER
 // =============================================================================
 app.listen(port);
 console.log('up and running.');
+
