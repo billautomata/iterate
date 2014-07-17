@@ -58,8 +58,28 @@ router.route('/gist_raw/:db_id').get(function(req,res){
 	        'User-Agent': 'request'
 	    }  		
   }, function(err, inc, body){
-  	console.log(body)
+  	//console.log(body)
   	res.json(body);
+  })
+
+})
+
+router.route('/gist_rawurl/').post(function(req,res){
+
+  console.log('POST called')
+  console.log('req bod' )
+  console.log(req.body)
+
+  request({
+      url: req.body.url,
+      method: 'GET',
+      json: false,
+      headers: {
+          'User-Agent': 'request'
+      }     
+  }, function(err, inc, body){
+    console.log(body)
+    res.send(body);
   })
 
 })
@@ -78,7 +98,9 @@ router.route('/gist/:db_id').get(function(req,res){
 	    }  		
   }, function(err, inc, body){
   	console.log(body)
-  	res.json(body);
+
+  	
+  	
   })
   
 })
