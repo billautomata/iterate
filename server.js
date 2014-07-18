@@ -5,7 +5,7 @@ var moment = require('moment')
 var express_json = require('express-json')
 var json = require('json')
 var request = require('request')
-
+var fs = require('fs')
 var GitHubApi = require("github");
 
 var github = new GitHubApi({ version: "3.0.0" });
@@ -105,6 +105,16 @@ router.route('/gist/:db_id').get(function(req,res){
   
 })
 
+router.route('/gist_local/:db_id').get(function(req,res){
+
+  console.log('local gist called')
+  console.log('gist id ' + req.params.db_id)
+
+  fs.readFile(__dirname +'/html/' + req.params.db_id + '/test.js', function(err,data){
+    res.send(data)
+  })
+
+})
 
 // more routes for our API will happen here
 
