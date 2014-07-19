@@ -4,55 +4,159 @@
 
     <script src='jquery-1.11.1.js'></script>
     <script src='d3.js' charset='utf-8'></script>
+    <script src='moment.js' charset='utf-8'></script>
+    <script src='underscore-min.js' charset='utf-8'></script>
+
+  <style>
+
+    body {
+      font-family: monospace;
+      font-size: 12px;
+    }
+
+    .summary {
+      height: 200px;
+      width: 1000px;
+      margin: auto;
+    }
+
+    .comments_and_commits {
+      width: 80%;
+      margin:auto;
+    }
+
+  </style>
+
 
   </head>
 
+
   <body>
-    <div class='derp'></div>
+    <div class='summary'></div>
+    <div class='comments_and_commits'></div>
   </body>
 
   <script>
+
+  // 2508468d856680cf5351
     
-    $.ajax({
-
-      type: 'GET',
-      url: '/api/gist_raw/2508468d856680cf5351',
-      data: {},
-      success: function(data){
-
-        console.log(data)
-
-        // get the js file and execute it
-
-        $.ajax({
-
-          type: 'POST',
-          url: '/api/gist_rawurl/',
-          data: { 
-            url: data.files['test.js'].raw_url
-          },
-          success: function(data){
-
-            var s = document.createElement('script');
-              s.type = 'text/javascript';
-              var code = data;
-              try {
-                s.appendChild(document.createTextNode(code));
-                document.body.appendChild(s);
-              } catch (e) {
-                s.text = code;
-                document.body.appendChild(s);
-              }
+  var comments_json = []
+  var commits_json = []
 
 
-          }
+  d3.json('/api/gist_everything/2508468d856680cf5351', function(json){
 
+    console.log(json)
 
-        })
+    json.files.forEach(function(data){
+
+      var s = document.createElement('script');
+        s.type = 'text/javascript';
+        var code = data;
+        try {
+          s.appendChild(document.createTextNode(code));
+          document.body.appendChild(s);
+        } catch (e) {
+          s.text = code;
+          document.body.appendChild(s);
+        }
+
+    })
+
+    json.history.forEach(function(element){
+
+      if(element.committed_at === undefined){
+
+        // comment type
+        comments_json.push(element)
+
+      } else {
+
+        // commit type
+        commits_json.push(element)
 
       }
 
     })
+
+    display_history()
+
+  })
+
+  function display_history(){
+
+    var history = []
+
+    comments_json.forEach(function(comment){
+
+      history.push({
+        date: comment.created_at,
+        type: 'comment',
+        element: comment
+      })
+
+    })
+
+    commits_json.forEach(function(commit){
+
+      history.push({
+        date: commit.committed_at,
+        type: 'commit',
+        element: commit
+      })
+
+    })
+
+
+    history.sort(function(a,b){
+      return new moment(b.date).valueOf() - new moment(a.date).valueOf()
+    })
+
+    console.log(history)
+
+    history.forEach(function(element){
+
+      console.log(element)
+
+      if(element.type === 'commit' && element.element.change_status.additions === undefined){ return; }
+
+      console.log(element)
+
+      var div = d3.select('div.comments_and_commits').append('div')
+        .style('margin', 3)
+        .style('border', '1px solid rgb(232,232,232)')
+        .style('padding', 5)
+
+      if(element.type === 'commit'){
+
+        var lines_added = element.element.change_status.additions
+        var lines_removed = element.element.change_status.deletions
+
+        div.style('display', 'inline-block')
+        div.append('span').html('commit ')
+
+        div.append('span').html('(+' + lines_added).style('color', 'green')
+        div.append('span').html('-' + lines_removed).style('color', 'red')
+        div.append('span').html(') ' + element.date)
+
+      } else {
+
+        div.append('p').html(element.element.user.login).style('font-weight', 800)
+        div.append('p').html(element.element.created_at).style('font-style', 'italic')
+        div.append('p').html(element.element.body)
+
+        //div.append('span').html('(+' + lines_added).style('color', 'green')
+        //div.append('span').html('-' + lines_removed).style('color', 'red')
+        //div.append('span').html(') ' + element.date)
+
+
+      }
+
+    })
+
+  } // end of display_history
+
+
 
   </script>
 

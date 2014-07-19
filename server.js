@@ -45,6 +45,66 @@ router.get('/', function(req, res) {
 	res.send('ok')
 });
 
+
+router.route('/gist_everything/:gist_id').get(function(req,res){
+
+  console.log('get everything called.')
+  console.log('gist id ' + req.params.gist_id)
+
+  var return_object = {}
+  return_object.history = []
+  return_object.files = []
+
+  request({
+    url: 'https://api.github.com/gists/' + req.params.gist_id,
+    method: 'GET',
+    json: true,
+    headers: {
+        'User-Agent': 'request',
+        Authorization: 'token f6fe8043155da64063e3aed8005e44439a8ce29d'
+    }  
+  }, function(err, inc, body){
+
+    return_object.raw = body
+    console.log(body)
+
+    for(filename in body.files){
+
+      return_object.files.push(body.files[filename].content)
+
+    }
+
+    body.history.forEach(function(element){
+      return_object.history.push(element)
+    })
+
+
+    request({
+      url: 'https://api.github.com/gists/' + req.params.gist_id + '/comments',
+      method: 'GET',
+      json: true,
+      headers: {
+          'User-Agent': 'request',
+          Authorization: 'token f6fe8043155da64063e3aed8005e44439a8ce29d'
+      }        
+    }, function(err,inc,body){
+
+      body.forEach(function(element){
+
+        return_object.history.push(element)
+
+      })
+
+      res.json(return_object)
+
+    })
+
+  })
+
+})
+
+
+/*
 router.route('/gist_raw/:db_id').get(function(req,res){
 
   console.log('get called')
@@ -54,11 +114,11 @@ router.route('/gist_raw/:db_id').get(function(req,res){
   		url: 'https://api.github.com/gists/' + req.params.db_id,
   		method: 'GET',
   		json: true,
-	    headers: {
-	        'User-Agent': 'request'
-	    }  		
+      headers: {
+          'User-Agent': 'request',
+          Authorization: 'token f6fe8043155da64063e3aed8005e44439a8ce29d'
+      }   	
   }, function(err, inc, body){
-  	//console.log(body)
   	res.json(body);
   })
 
@@ -78,7 +138,6 @@ router.route('/gist_rawurl/').post(function(req,res){
           'User-Agent': 'request'
       }     
   }, function(err, inc, body){
-    console.log(body)
     res.send(body);
   })
 
@@ -94,25 +153,66 @@ router.route('/gist/:db_id').get(function(req,res){
   		method: 'GET',
   		json: true,
 	    headers: {
-	        'User-Agent': 'request'
+	        'User-Agent': 'request',
+          
 	    }  		
   }, function(err, inc, body){
-  	console.log(body)
-
-  	
-  	
+    res.json(body)
   })
   
 })
 
+router.route('/gist/data/:db_id').get(function(req,res){
+
+  console.log('get data called')
+  console.log('gist id ' + req.params.db_id)
+
+  request({
+      url: 'https://api.github.com/gists/' + req.params.db_id,
+      method: 'GET',
+      json: true,
+      headers: {
+          'User-Agent': 'request',
+          Authorization: 'token f6fe8043155da64063e3aed8005e44439a8ce29d'
+      }     
+  }, function(err, inc, body){
+    res.json(body)
+  })
+
+
+
+})
+*/
+
 router.route('/gist_local/:db_id').get(function(req,res){
+
+  /*
+    Go to the local directory, find all the .js files, and return them as a concatenated string.
+  */
 
   console.log('local gist called')
   console.log('gist id ' + req.params.db_id)
 
-  fs.readFile(__dirname +'/html/' + req.params.db_id + '/test.js', function(err,data){
-    res.send(data)
+  var output = ''
+
+  fs.readdir(__dirname + '/html/' + req.params.db_id, function(err,data){
+
+    data.forEach(function(file_name){
+
+      var split_string = file_name.split('.')
+      if(split_string[split_string.length-1] === 'js'){
+        output += fs.readFileSync(__dirname+'/html/'+req.params.db_id+'/'+file_name)
+      }
+
+    })
+
+    res.send(output)
+
   })
+
+  //fs.readFile(__dirname +'/html/' + req.params.db_id + '/test.js', function(err,data){
+  //  res.send(data)
+  //})
 
 })
 
