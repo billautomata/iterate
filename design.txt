@@ -1,29 +1,8 @@
 [x] a skeleton page that gets the javascript from the gist and runs it against the current body 
 [x] local mode, static served based on the GIST id
+[x] history of comments and commits
 
+[] css file support
 
-
-history of edits and comments
 links to the gist page
 robust simulation tab
-
-
-
-[app]
-
-	[menu]
-		list of all the gists that have a .js file
-	[single gist]
-		list of commits
-		number of commits
-		graph of timeline of commits
-		latest comments
-
-[graph of latest commit]
-[comment]
-[comment]
-[commit]
-[comment]
-[comment]
-[commit]
-[commit]

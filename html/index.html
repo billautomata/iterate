@@ -14,10 +14,8 @@
       font-size: 12px;
     }
 
-    .summary {
-      height: 200px;
-      width: 1000px;
-      margin: auto;
+    .app {
+      
     }
 
     .comments_and_commits {
@@ -32,7 +30,7 @@
 
 
   <body>
-    <div class='summary'></div>
+    <div class='app'></div>
     <div class='comments_and_commits'></div>
   </body>
 
@@ -43,8 +41,15 @@
   var comments_json = []
   var commits_json = []
 
+  var host = '/api/gist_everything/'
 
-  d3.json('/api/gist_everything/2508468d856680cf5351', function(json){
+  var gist = window.location.hash.split('#')[1]
+
+  if(window.location.hash.split('#')[2] === 'local'){
+    host = '/api/gist_local/'
+  }
+
+  d3.json(host+gist + '?'+Math.random(), function(json){
 
     console.log(json)
 

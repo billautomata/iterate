@@ -78,7 +78,6 @@ router.route('/gist_everything/:gist_id').get(function(req,res){
       return_object.history.push(element)
     })
 
-
     request({
       url: 'https://api.github.com/gists/' + req.params.gist_id + '/comments',
       method: 'GET',
@@ -202,11 +201,17 @@ router.route('/gist_local/:db_id').get(function(req,res){
       var split_string = file_name.split('.')
       if(split_string[split_string.length-1] === 'js'){
         output += fs.readFileSync(__dirname+'/html/'+req.params.db_id+'/'+file_name)
+        output += '\n'
       }
 
     })
 
-    res.send(output)
+    var return_object = {}
+    return_object.files = []
+    return_object.files.push(output)
+    return_object.history = []
+
+    res.json(return_object)
 
   })
 
