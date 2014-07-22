@@ -5,6 +5,7 @@
     <script src='jquery-1.11.1.js'></script>
     <script src='d3.js' charset='utf-8'></script>
     <script src='moment.js' charset='utf-8'></script>
+    <script src='util.js' charset='utf-8'></script>
     <script src='underscore-min.js' charset='utf-8'></script>
 
   <style>
@@ -149,11 +150,6 @@
         div.append('p').html(element.element.user.login).style('font-weight', 800)
         div.append('p').html(element.element.created_at).style('font-style', 'italic')
         div.append('p').html(element.element.body)
-
-        //div.append('span').html('(+' + lines_added).style('color', 'green')
-        //div.append('span').html('-' + lines_removed).style('color', 'red')
-        //div.append('span').html(') ' + element.date)
-
 
       }
 
