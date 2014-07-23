@@ -145,7 +145,7 @@
 
       console.log(element)
 
-      if(element.type === 'commit' && element.element.change_status.additions === undefined){ return; }
+      //if(element.type === 'commit' && element.element.change_status.additions === undefined){ return; }
 
       console.log(element)
 
@@ -162,9 +162,13 @@
         div.style('display', 'inline-block')
         div.append('span').html('commit ')
 
-        div.append('span').html('(+' + lines_added).style('color', 'green')
-        div.append('span').html('-' + lines_removed).style('color', 'red')
-        div.append('span').html(') ' + element.date)
+        if(lines_added !== undefined){
+          div.append('span').html('(+' + lines_added).style('color', 'green')
+          div.append('span').html('-' + lines_removed).style('color', 'red')
+          div.append('span').html(') ' + new moment(element.date).fromNow())
+        } else {
+          div.append('span').html(new moment(element.date).fromNow())
+        }
 
       } else {
 
