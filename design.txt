@@ -3,6 +3,9 @@
 [x] history of comments and commits
 
 [] css file support
+[] links to the gist page
+[] robust simulation overlay
+[] add a comments.md for my explanations
 
-links to the gist page
-robust simulation tab
+UI
+[] graph of commits and comments
