@@ -1,14 +1,16 @@
-var express    = require('express');
-var app        = express();
+var express = require('express');
+var app = express();
 var bodyParser = require('body-parser');
 var moment = require('moment')
 var express_json = require('express-json')
 var json = require('json')
 var request = require('request')
 var fs = require('fs')
-var GitHubApi = require("github");
+var GitHubApi = require("github")
+var marked = require('marked')
 
-var github = new GitHubApi({ version: "3.0.0" });
+
+var github = new GitHubApi({ version: "3.0.0" })
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -70,9 +72,19 @@ router.route('/gist_everything/:gist_id').get(function(req,res){
 
     for(filename in body.files){
 
-      return_object.files.push(body.files[filename].content)
+      return_object.files.push({ 
+        content: body.files[filename].content,
+        name: filename
+      })
 
     }
+
+    // convert markdown files to markdown
+    return_object.files.forEach(function(file){
+      if(file.name.split('.')[1] === 'md'){
+        file.content = marked(file.content)
+      }
+    })
 
     body.history.forEach(function(element){
       return_object.history.push(element)
@@ -194,21 +206,42 @@ router.route('/gist_local/:db_id').get(function(req,res){
 
   var output = ''
 
+
+
   fs.readdir(__dirname + '/html/' + req.params.db_id, function(err,data){
 
+    var return_object = {}
+    return_object.files = []
+  
     data.forEach(function(file_name){
 
+
+      if(fs.lstatSync(__dirname+'/html/'+req.params.db_id+'/'+file_name).isFile()){
+
+        var output = fs.readFileSync(__dirname+'/html/'+req.params.db_id+'/'+file_name)
+        output += '\n'
+
+        if(file_name.split('.')[1] === 'md') {
+          output = marked(output)
+        }
+
+        return_object.files.push({
+          name: file_name,
+          content: output
+        })
+
+      }
+
+/*
       var split_string = file_name.split('.')
       if(split_string[split_string.length-1] === 'js'){
         output += fs.readFileSync(__dirname+'/html/'+req.params.db_id+'/'+file_name)
         output += '\n'
       }
+*/
 
     })
 
-    var return_object = {}
-    return_object.files = []
-    return_object.files.push(output)
     return_object.history = []
 
     res.json(return_object)
@@ -232,4 +265,6 @@ app.use('/', express.static(__dirname+'/html'))
 // =============================================================================
 app.listen(port);
 console.log('up and running.');
+
+console.log(marked('I am using __markdown__.'))
 
