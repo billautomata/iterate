@@ -9,6 +9,16 @@ var fs = require('fs')
 var GitHubApi = require("github")
 var marked = require('marked')
 
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: true,
+  smartLists: true,
+  smartypants: false
+});
 
 var github = new GitHubApi({ version: "3.0.0" })
 

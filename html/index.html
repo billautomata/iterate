@@ -32,6 +32,7 @@
 
   <body>
     <div class='app'></div>
+    <div class='description'></div>
     <div class='comments_and_commits'></div>
   </body>
 
@@ -72,10 +73,14 @@
         }
 
       } else if (extension === 'md'){
-        d3.select('body').append('div')
+        d3.select('div.description').append('div')
           .html(file.content)
           .style('width', '60%')
-          .style('margin', 'auto')
+          .style('border', '1px dotted rgb(200,200,200)')
+          .style('padding', 20)
+          .style('margin-top', 5)
+          .style('margin-left', 'auto')
+          .style('margin-right', 'auto')
       }
 
     })
