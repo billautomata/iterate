@@ -12,7 +12,6 @@
 
     body {
       font-family: monospace;
-      font-size: 12px;
     }
 
     .app {
@@ -86,6 +85,8 @@
           .style('margin-top', 5)
           .style('margin-left', 'auto')
           .style('margin-right', 'auto')
+      } else if (extension === 'css'){
+        d3.select('head').append('style').html(file.content)
       }
 
     })
