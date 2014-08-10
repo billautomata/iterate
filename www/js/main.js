@@ -105,9 +105,7 @@
       console.log(element)
 
       var div = d3.select('div.comments_and_commits').append('div')
-        .style('margin', 3)
-        .style('border', '1px solid rgb(232,232,232)')
-        .style('padding', 5)
+        .attr('class', 'individual_comment_and_commit')
 
       if(element.type === 'commit'){
 
@@ -115,7 +113,7 @@
         var lines_removed = element.element.change_status.deletions
 
         div.style('display', 'inline-block')
-        div.append('span').html('commit ')
+        div.append('span').html('( commit ) ')
 
         if(lines_added !== undefined){
           div.append('span').html('(+' + lines_added).style('color', 'green')

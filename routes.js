@@ -91,7 +91,7 @@ module.exports = function(app){
   router.route('/gist_local/:db_id').get(function(req,res){
 
     /*
-      Go to the local directory, find all the .js files, and return them as a concatenated string.
+      Go to the local directory, find all the files, and return them as a concatenated string.
     */
 
     console.log('local gist called')
@@ -99,16 +99,16 @@ module.exports = function(app){
 
     var output = ''
 
-    fs.readdir(__dirname + '/html/' + req.params.db_id, function(err,data){
+    fs.readdir(__dirname + '/gist_local/' + req.params.db_id, function(err,data){
 
       var return_object = {}
       return_object.files = []
 
       data.forEach(function(file_name){
 
-        if(fs.lstatSync(__dirname+'/html/'+req.params.db_id+'/'+file_name).isFile()){
+        if(fs.lstatSync(__dirname+'/gist_local/'+req.params.db_id+'/'+file_name).isFile()){
 
-          var output = fs.readFileSync(__dirname+'/html/'+req.params.db_id+'/'+file_name)
+          var output = fs.readFileSync(__dirname+'/gist_local/'+req.params.db_id+'/'+file_name)
           output += '\n'
 
           if(file_name.split('.')[1] === 'md') {

@@ -32,6 +32,14 @@ div {
   margin:auto;
 }
 
+.individual_comment_and_commit {
+
+  margin: 3px;
+  border: 1px solid rgb(232,232,232);
+  padding: 5px;
+
+}
+
 .bottom-padding {
   margin-bottom: 200px;
 }
