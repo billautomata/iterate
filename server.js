@@ -1,12 +1,14 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
+/* jshint undef: true, asi: true, browser: true, devel: true, node: true */
+
+var express = require('express')
+var bodyParser = require('body-parser')
 var moment = require('moment')
-var express_json = require('express-json')
-var json = require('json')
 var request = require('request')
 var fs = require('fs')
 var marked = require('marked')
+
+var app = express()
+app.use(bodyParser())
 
 marked.setOptions({
   renderer: new marked.Renderer(),
@@ -19,18 +21,17 @@ marked.setOptions({
   smartypants: false
 });
 
-app.use(bodyParser())
-
 var port = process.env.PORT || 8000;
 
+// routes
 require('./routes.js')(app)
-
 app.use('/', express.static(__dirname+'/html'))
 
 // START THE SERVER
 // =============================================================================
-app.listen(port);
-console.log('up and running.');
+app.listen(port, function(){
+    console.log('up and running on port ' + port);
+})
 
 /*
 router.route('/gist_raw/:db_id').get(function(req,res){

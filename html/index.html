@@ -3,19 +3,28 @@
 
   <head>
 
-    <script src='jquery-1.11.1.js'></script>
-    <script src='d3.js' charset='utf-8'></script>
-    <script src='moment.js' charset='utf-8'></script>
-    <script src='util.js' charset='utf-8'></script>
-    <script src='underscore-min.js' charset='utf-8'></script>
-    <script src='simulator.js' charset='utf-8'></script>
-    <link href='default.css' type='text/css' rel='stylesheet'>
+    <!-- vendor js -->
+    <script src='vendor_js/jquery-1.11.1.js'></script>
+    <script src='vendor_js/d3.js' charset='utf-8'></script>
+    <script src='vendor_js/moment.js' charset='utf-8'></script>
+    <script src='vendor_js/underscore.js' charset='utf-8'></script>
+
+    <!-- vendor css -->
+    <link href='vendor_css/bootstrap.css' type='text/css' rel='stylesheet'>
+    <link href='vendor_css/bootstrap-responsive.css' type='text/css' rel='stylesheet'>
+
+    <!-- personal js -->
+    <script src='js/util.js' charset='utf-8'></script>
+    <script src='js/simulator.js' charset='utf-8'></script>
+
+    <!-- personal css -->
+    <link href='css/default.css' type='text/css' rel='stylesheet'>
 
   </head>
 
   <body>
     <div class='simulator_ui'>
-      <div class='simulator_header'>simulated data settings</div> 
+      <div class='simulator_header'>simulated data settings</div>
     </div>
     <div class='app'></div>
     <div class='description'></div>
@@ -23,13 +32,14 @@
     <div class='bottom-padding'></div>
   </body>
 
+  <script src='vendor_js/bootstrap.js' charset='utf-8'></script>
+
   <script>
 
   setup_simulator()
 
-
   // 2508468d856680cf5351
-    
+
   var comments_json = []
   var commits_json = []
 
@@ -64,13 +74,8 @@
 
       } else if (extension === 'md'){
         d3.select('div.description').append('div')
+          .attr('class', 'md')
           .html(file.content)
-          .style('width', '60%')
-          .style('border', '1px dotted rgb(200,200,200)')
-          .style('padding', 20)
-          .style('margin-top', 5)
-          .style('margin-left', 'auto')
-          .style('margin-right', 'auto')
       } else if (extension === 'css'){
         d3.select('head').append('style').html(file.content)
       }

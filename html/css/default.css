@@ -1,9 +1,8 @@
-
 body {
-  font-family: monospace;
+
 }
 
-div { 
+div {
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
 	box-sizing: border-box;         /* Opera/IE 8+ */
@@ -11,6 +10,15 @@ div {
 
 .app {
   width: 80%;
+}
+
+.md {
+  width: 70%;
+  border: 1px dotted rgb(200,200,200);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3px;
+  padding: 10px;
 }
 
 .comments_and_commits {
@@ -22,7 +30,6 @@ div {
   margin-bottom: 200px;
 }
 
-
 .simulator_ui {
 
 	z-index: 2;
@@ -30,7 +37,7 @@ div {
 	left: 10px;
 	bottom: 10px;
 	width: 200px;
-	height: 170px;
+	height: 200px;
 	background: rgb(232,232,232);
 
 	padding: 3px;
