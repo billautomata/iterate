@@ -25,7 +25,7 @@ var port = process.env.PORT || 8000;
 
 // routes
 require('./routes.js')(app)
-app.use('/', express.static(__dirname+'/html'))
+app.use('/', express.static(__dirname+'/www'))
 
 // START THE SERVER
 // =============================================================================
