@@ -32,5 +32,5 @@ node based application to manage the github gist based design and review process
 *
 * `readme.md`
   * displayed in it's own section
-
-  
+* `*.css`
+* `*.js`
