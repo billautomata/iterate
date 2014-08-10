@@ -1,7 +1,9 @@
+/* jshint undef: true, asi: true, browser: true, devel: true, node: true */
+
 var express = require('express');
 var request = require('request')
 var marked = require('marked')
-
+var fs = require('fs')
 
 module.exports = function(app){
 
@@ -42,7 +44,7 @@ module.exports = function(app){
       return_object.raw = body
       console.log(body)
 
-      for(filename in body.files){
+      for(var filename in body.files){
 
         return_object.files.push({
           content: body.files[filename].content,
