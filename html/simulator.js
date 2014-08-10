@@ -13,6 +13,8 @@ function setup_simulator(){
 		setSessionStorage('simulator_data', simulator_data)
 	}
 
+	console.log(simulator_data)
+
 	var div_nteams = d3.select('div.simulator_ui').append('div')
 		.style('width', '100%')
 
@@ -63,7 +65,7 @@ function setup_simulator(){
 	div_nsuborgs.append('input')
 		.attr('id', 'n_alerts_per_team')
 		.attr('type', 'text')
-		.style('height', '16px')
+		//.style('height', '16px')
 		.style('width', '15%')
 		.style('margin', '4px')
 		.style('border', '1px dashed rgb(244,244,244)')
@@ -234,7 +236,7 @@ var sim_api = function(){
   }
 */
 
-	var simulator_data = getSessionStorage('simulator_data')
+  var simulator_data = getSessionStorage('simulator_data')
 
   var n_teams = simulator_data.n_teams
   var n_suborgs = simulator_data.n_suborgs
