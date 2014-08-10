@@ -26,7 +26,7 @@ node based application to manage the github gist based design and review process
 * `version.json`
   * example format - `
 {
-    "version": 0.0.1,
+    "version": "0.0.1",
     "title": "new dashboard",
 }`
 *
