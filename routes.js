@@ -5,6 +5,8 @@ var request = require('request')
 var marked = require('marked')
 var fs = require('fs')
 
+var local_gists_path = 'gist_local/'
+
 module.exports = function(app){
 
   // ROUTES FOR OUR API
@@ -99,18 +101,19 @@ module.exports = function(app){
 
     var output = ''
 
-    fs.readdir(__dirname + '/gist_local/' + req.params.db_id, function(err,data){
+    fs.readdir(__dirname + local_gists_path + req.params.db_id, function(err,data){
 
       var return_object = {}
       return_object.files = []
 
       data.forEach(function(file_name){
 
-        if(fs.lstatSync(__dirname+'/gist_local/'+req.params.db_id+'/'+file_name).isFile()){
+        if(fs.lstatSync(__dirname+ local_gists_path +req.params.db_id+'/'+file_name).isFile()){
 
-          var output = fs.readFileSync(__dirname+'/gist_local/'+req.params.db_id+'/'+file_name)
+          var output = fs.readFileSync(__dirname + local_gists_path +req.params.db_id + '/' + file_name)
           output += '\n'
 
+          // parse the .md files and conver to markdown using marked
           if(file_name.split('.')[1] === 'md') {
             output = marked(output)
           }
@@ -126,7 +129,7 @@ module.exports = function(app){
 
       return_object.history = []
 
-      res.json(return_object)
+      res.json(200, return_object)
 
     })
 
