@@ -70,6 +70,7 @@ function mogrify_response(json){
       if(_.isUndefined(javascript_files[filename])){
         console.log('hilarious... ' + filename +  ' not found.')
       } else {
+        console.log('importing ' + filename)
         load_js_script(javascript_files[filename])
       }
 

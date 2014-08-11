@@ -22,7 +22,7 @@ function setup_simulator(){
 		.style('text-align', 'right')
 		.style('width', '70%')
 		.style('display', 'inline-block')
-	
+
 	div_nteams.append('input')
 		.attr('id', 'n_teams')
 		.attr('type', 'text')
@@ -34,7 +34,7 @@ function setup_simulator(){
 		.style('text-align', 'center')
 		.property('value', simulator_data.n_teams)
 		.on('keyup', set_simulator_data)
-		
+
 	var div_nsuborgs = d3.select('div.simulator_ui').append('div')
 
 	div_nsuborgs.append('div').text('# of suborgs')
@@ -42,7 +42,7 @@ function setup_simulator(){
 		.style('width', '70%')
 		.style('display', 'inline-block')
 
-	
+
 	div_nsuborgs.append('input')
 		.attr('id', 'n_suborgs')
 		.attr('type', 'text')
@@ -54,7 +54,7 @@ function setup_simulator(){
 		.style('text-align', 'center')
 		.property('value', simulator_data.n_suborgs)
 		.on('keyup', set_simulator_data)
-		
+
 	var div_nalerts_per_team = d3.select('div.simulator_ui').append('div')
 
 	div_nsuborgs.append('div').text('# of alerts per team')
@@ -469,6 +469,7 @@ var sim_api = function(){
   }
 
   window.evident_data = return_data
+	return return_data
+
 
 }
-
