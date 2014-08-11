@@ -34,3 +34,13 @@ node based application to manage the github gist based design and review process
   * displayed in it's own section
 * `*.css`
 * `*.js`
+
+###### optional
+* `imports.json`
+  * `
+    [
+    "baz.js",
+    "foo.js",
+    "bar.js"
+    ]
+  `

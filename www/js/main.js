@@ -1,5 +1,5 @@
 /* jshint undef: true, asi: true, browser: true, devel: true, node: true */
-/* global d3, moment, setup_simulator */
+/* global d3, moment, setup_simulator, _ */
 
 setup_simulator()
 
@@ -7,6 +7,8 @@ var version_info = {
   version: '0.0.0',
   title: 'sketch'
 }
+
+var custom_js_build = []
 
 var comments_json = []
 var commits_json = []
@@ -30,40 +32,49 @@ d3.json(host+gist + '?'+Math.random(), function(json){
 
 function mogrify_response(json){
 
+  var javascript_files = {}
+
   json.files.forEach(function(file){
 
     var extension = file.name.split('.')[1]
 
     if(extension === 'js'){
-
-      var s = document.createElement('script');
-      s.type = 'text/javascript';
-      var code = file.content;
-      try {
-        s.appendChild(document.createTextNode(code));
-        document.body.appendChild(s);
-      } catch (e) {
-        s.text = code;
-        document.body.appendChild(s);
-      }
+      javascript_files[file.name] = file.content
 
     } else if (extension === 'md'){
-
       d3.select('div.description').append('div')
         .attr('class', 'md')
         .html(file.content)
 
     } else if (extension === 'css'){
-
       d3.select('head').append('style').html(file.content)
-
     }
 
     if(file.name === 'version.json'){
       version_info = JSON.parse(file.content)
     }
 
+    if(file.name === 'imports.json'){
+      custom_js_build = JSON.parse(file.content)
+    }
+
   })
+
+  if(custom_js_build.length === 0){
+    _.keys(javascript_files).forEach(function(filename){
+      load_js_script(javascript_files[filename])
+    })
+  } else {
+    custom_js_build.forEach(function(filename){
+
+      if(_.isUndefined(javascript_files[filename])){
+        console.log('hilarious... ' + filename +  ' not found.')
+      } else {
+        load_js_script(javascript_files[filename])
+      }
+
+    })
+  }
 
   json.history.forEach(function(element){
 
@@ -76,6 +87,20 @@ function mogrify_response(json){
     }
 
   })
+
+}
+
+function load_js_script(code){
+
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  try {
+    s.appendChild(document.createTextNode(code));
+    document.body.appendChild(s);
+  } catch (e) {
+    s.text = code;
+    document.body.appendChild(s);
+  }
 
 }
 
