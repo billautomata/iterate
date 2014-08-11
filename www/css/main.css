@@ -15,7 +15,6 @@ div {
 }
 
 .app {
-  width: 80%;
 }
 
 .md {
@@ -53,10 +52,7 @@ div {
   width: 200px;
   height: 170px;
   background: rgb(232,232,232);
-
   padding: 3px;
-
-  font-family: Arial, Courier;
   font-size: 12px;
 
 }
